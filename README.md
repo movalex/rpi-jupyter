@@ -43,11 +43,13 @@ If you want to start bash session with root accesss so you could do more, just u
     docker exec -it -u 0 <container id> /bin/bash
 
 ### For Data Scientists
-You can pull `movalex/rpi-jupyter-conda-datascience` so that you have most of the data science packages installed. This image has preinstalled following additional packages: 
+You can pull `movalex/rpi-jupyter-julia`, based on this image, so that you have most of the data science packages installed. This image has preinstalled following additional packages: 
 
     cython flask h5py numexpr pandas pillow pycrypto pytables scikit-learn 
     scipy sqlalchemy sympy beautifulsoup4 bokeh cloudpickle dill matplotlib
     scikit-image seaborn statsmodels vincent xlrd nltk
+
+It also has latest [iJulia 0.5.1](https://julialang.org/) notebook onboard with all stuff it goes with. `Pyplot`, `Distributions` and `Rdatasets` are preinstalled.
 
 You can install additional packages manually via `conda install` or `pip install`. This will work with unpriviledged user, since all pachakes are installed in `opt/conda`, owned by this user.
 
