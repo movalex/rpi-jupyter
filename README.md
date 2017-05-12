@@ -6,7 +6,7 @@ To have your own Jupyter Notebook Server running 24/7 on Raspberry Pi. If connec
 Despite the fact that we adore Raspberry Pi and it is becoming more and more powerful, it is not intended to run large cpu intensive tasks. It will be slow and the best model only offers 1G of RAM. For larger datasets, you either need to use incremental machine learning algorithms or build a cluster and run Spark on it. 
 
 ----------
-This is a dockerfile for building jupyter notebook on your Raspberry Pi. It is a minimal notebook server with Python 3.4.3 installed with Miniconda3 and [resin/rpi-raspbian:jessie](https://hub.docker.com/r/resin/rpi-raspbian/) as base image. These packages are installed:
+This is an image for building jupyter notebook on your Raspberry Pi. It is a minimal notebook server with Python 3.4.3 installed with Miniconda3 and [resin/rpi-raspbian:jessie](https://hub.docker.com/r/resin/rpi-raspbian/) as base image. These packages are installed:
 
     build-essential libncursesw5-dev libncurses5-dev libgdbm-dev libc6-dev zlib1g-dev libsqlite3-dev tk-dev libssl-dev openssl libbz2-dev ca-certificates wget bzip2 vim
 
