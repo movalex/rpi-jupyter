@@ -69,7 +69,7 @@ VOLUME /home/$NB_USER/work
 # Install Tini from binary. Tini operates as a process subreaper for jupyter. This prevents kernel crashes.
 USER root
 ENV TINI_VERSION 0.14.0
-RUN wget https://github.com/krallin/tini/releases/download/v0.14.0/tini-armhf && \
+RUN wget https://github.com/krallin/tini/releases/download/v${TINI_VERSION}/tini-armhf && \
 	echo "4d06a370b9f912334e7edd7a000099474fd3c7f3d73d80353bd66ba7dc413a86 *tini-armhf" | sha256sum -c - && \
 	mv tini-armhf /usr/local/bin/tini && \
 	chmod +x /usr/local/bin/tini
