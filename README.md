@@ -1,34 +1,45 @@
 # rpi-jupyter-conda
-Jupyter Notebook Server on Raspberry Pi
+Minimal Jupyter Notebook for Raspberry Pi with Python 3.6.3
 
-To have your own Jupyter Notebook Server running 24/7 on Raspberry Pi. If connected to your router, with port forwarding and DDNS set up, you can carry out your Data Science tasks on the move.
+To have your own Jupyter Notebook Server running 24/7 on Raspberry Pi. If connected to your router, with port forwarding and DDNS set up, you can carry out your Jupyter tasks on the move.
 
 Despite the fact that we adore Raspberry Pi and it is becoming more and more powerful, it is not intended to run large cpu intensive tasks. It will be slow and the best model only offers 1G of RAM. For larger datasets, you either need to use incremental machine learning algorithms or build a cluster and run Spark on it. 
 
 ----------
-This is an image for building jupyter notebook on your Raspberry Pi. It is a minimal notebook server with Python 3.4.3 installed with Miniconda3 and [resin/rpi-raspbian:jessie](https://hub.docker.com/r/resin/rpi-raspbian/) as base image. These packages are installed:
+This is an image for building jupyter notebook on your Raspberry Pi. It is a minimal notebook server with Python 3.6.3 installed with Berryconda3 and [resin/rpi-raspbian:latest](https://hub.docker.com/r/resin/rpi-raspbian/) as base image. Special thanks to [jjhelmus/berryconda](https://github.com/jjhelmus/berryconda)).
 
-    build-essential libncursesw5-dev libncurses5-dev libgdbm-dev libc6-dev zlib1g-dev libsqlite3-dev tk-dev libssl-dev openssl libbz2-dev ca-certificates wget bzip2 vim
+JupyterLab v0.31 is also installed with this image. You can play with it just by replacing `tree` with `lab` in notebook URL. 
+
+These packages are installed:
+
+    locales ca-certificates wget bzip2 vim fonts_liberation
 
 ### Installing
 
-    docker pull movalex/rpi-jupyter-conda
+    docker pull movalex/rpi-jupyter-conda:latest
 
 ### Running in detached mode
 
-    docker run -d -p 8888:8888 movalex/rpi-jupyter-conda 
+    docker run -d -p 8888:8888 movalex/rpi-jupyter-conda
 
 Now you can access your notebook at `http://<docker host IP address>:8888`
 
 ### Configuration
-The image already has following configuration:
+The image already has following configuration, so 'open browser' option is disabled and your notebook is accessible from any ip:
 
 * `c.NotebookApp.open_browser = False`
 * `c.NotebookApp.ip = '*'`
 
-If you would like to change some config, create your own `jupyter_notebook_config.py` (or use sample file from this repository) on the docker host and run the following to map a local config file to the container:
+If you would like to change configuration, create your own `jupyter_notebook_config.py` (or use sample file from this repository), place it to `$HOME/.jupyter` folder and link it to docker volume. Run the following to map a local config file to the container:
 
-    docker run -it -p <host port>:<dest port> -v <path to your config file>:/home/jovyan/.jupyter/jupyter_notebook_config.py movalex/rpi-jupyter-conda
+    docker run -it -p 8888:8888 -v <path to your config file>:/home/jovyan/.jupyter/jupyter_notebook_config.py movalex/rpi-jupyter-conda
+
+For example, if you want to add a password for your notebook, you can alter `c.NotebookApp.password = ''` section in config file. You can add password later after jupyter is installed. Just run 
+
+    from IPython.lib import passwd
+    passwd()
+
+in Python Jupyter notebook to generate new password, and add output as a value of `c.NotebookApp.password`.
 
 The notebook will run under unpriviledged user `jovyan` (uid=1000) with ownership of `/home/jovyan` and `opt/conda`. If you want to mount your default working directory on the host to preserve work even when notebook is not running or destroyed, use additional `-v` option:
 
@@ -43,15 +54,15 @@ If you want to start bash session with root accesss so you could do more, use th
     docker exec -it -u 0 <container id> /bin/bash
 
 ### For Data Scientists
-You can pull `movalex/rpi-jupyter-julia`, based on this image, so that you have most of the data science packages installed. This image has preinstalled following additional packages: 
+There's [movalex/rpi-jupyter-julia](https://hub.docker.com/r/movalex/rpi-jupyter-julia/) Docker image (see also [Github repository](https://github.com/movalex/rpi-jupyter-julia)), which has most of the data science packages preinstalled and compiled. This image has following packages: 
 
     cython flask h5py numexpr pandas pillow pycrypto pytables scikit-learn 
     scipy sqlalchemy sympy beautifulsoup4 bokeh cloudpickle dill matplotlib
     scikit-image seaborn statsmodels vincent xlrd nltk
 
-It also has latest [iJulia 0.5.1](https://julialang.org/) notebook onboard with all stuff it goes with. `Pyplot`, `Distributions` and `Rdatasets` are preinstalled.
+It also has [iJulia 0.6.2](https://julialang.org/) notebook with all stuff it goes with. `Pyplot`, `Distributions` and `Rdatasets` are preinstalled.
 
-You can install additional packages manually via `conda install` or `pip install`. This will work with unpriviledged user, since all pachakes are installed in `opt/conda`, owned by this user.
+You can install additional packages manually via `conda install` or `pip install`.
 
 Here's a list of all packages available for Raspberry Pi via Conda:
     
