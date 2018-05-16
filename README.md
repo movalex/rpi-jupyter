@@ -17,6 +17,12 @@ These packages are installed:
 
 ### Installing
 
+Of course, first you will need to install Docker on your Raspberry Pi:
+
+    curl -sSL https://get.docker.com | sh
+   
+Then run this:
+
     docker pull movalex/rpi-jupyter-conda:latest
 
 ### Running in detached mode
@@ -79,7 +85,5 @@ Here's a list of [all packages available](https://www.continuum.io/content/conda
 
 
 [![Anaconda-Server Badge](https://anaconda.org/rpi/python/badges/version.svg)](https://anaconda.org/rpi/python)
-
 [![Anaconda-Server Badge](https://anaconda.org/rpi/python/badges/platforms.svg)](https://anaconda.org/rpi/python)
-
 [![Anaconda-Server Badge](https://anaconda.org/rpi/python/badges/installer/conda.svg)](https://conda.anaconda.org/rpi)
