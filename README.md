@@ -1,14 +1,15 @@
 # rpi-jupyter-conda
-Minimal Jupyter Notebook for Raspberry Pi with Python 3.6.3
 
+Minimal Jupyter Notebook for Raspberry Pi with Python 3.6.3
+----------
 To have your own Jupyter Notebook Server running 24/7 on Raspberry Pi. If connected to your router, with port forwarding and DDNS set up, you can carry out your Jupyter tasks on the move.
 
-Despite the fact that we adore Raspberry Pi and it is becoming more and more powerful, it is not intended to run large cpu intensive tasks. It will be slow and the best model only offers 1G of RAM. For larger datasets, you either need to use incremental machine learning algorithms or build a cluster and run Spark on it. 
+This is a minimal Jupyter notebook server with Python 3.6.3 installed with [Berryconda3](https://github.com/jjhelmus/berryconda) and [resin/rpi-raspbian:latest](https://hub.docker.com/r/resin/rpi-raspbian/) as base image. JupyterLab is also installed. To use Lab interface just replace `tree` with `lab` in notebook URL. 
 
-----------
-This is an image for building jupyter notebook on your Raspberry Pi. It is a minimal notebook server with Python 3.6.3 installed with Berryconda3 and [resin/rpi-raspbian:latest](https://hub.docker.com/r/resin/rpi-raspbian/) as base image. Special thanks to [jjhelmus/berryconda](https://github.com/jjhelmus/berryconda)).
-
-JupyterLab v0.31 is also installed with this image. You can play with it just by replacing `tree` with `lab` in notebook URL. 
+* Minimal finction Jupyter notebook 5.2.x installation
+* Conda based Python 3.6.3 for Raspberry pi
+* Unprivileged user jovyan in group users (gid=100) with ownership over `/home/jovyan` and `/opt/conda`
+* [Tini](https://github.com/krallin/tini) 0.14.0 as the container entrypoint
 
 These packages are installed:
 
@@ -34,7 +35,7 @@ If you would like to change configuration, create your own `jupyter_notebook_con
 
     docker run -it -p 8888:8888 -v <path to your config file>:/home/jovyan/.jupyter/jupyter_notebook_config.py movalex/rpi-jupyter-conda
 
-For example, if you want to add a password for your notebook, you can alter `c.NotebookApp.password = ''` section in config file. You can add password later after jupyter is installed. Just run 
+To add a password for your notebook, you can alter `c.NotebookApp.password = ''` section in config file. You can add password later after jupyter is installed. Just run 
 
     from IPython.lib import passwd
     passwd()
@@ -64,7 +65,7 @@ It also has [iJulia 0.6.2](https://julialang.org/) notebook with all stuff it go
 
 You can install additional packages manually via `conda install` or `pip install`.
 
-Here's a list of all packages available for Raspberry Pi via Conda:
+Here's a list of [all packages available](https://www.continuum.io/content/conda-support-raspberry-pi-2-and-power8-le) for Raspberry Pi via Conda:
     
     anaconda-client, argcomplete, astropy, bitarray, blist, boto, bsdiff4,
     cheetah (Python 2 only), conda, conda-build, configobj, cython, cytoolz,
@@ -76,4 +77,9 @@ Here's a list of all packages available for Raspberry Pi via Conda:
     scikit-learn (armv7l only), scipy (armv7l only), setuptools, six,
     sqlalchemy, sphinx, sympy, toolz, tornado, twisted, werkzeug, wheel
 
-For further information see [conda support for raspberry pi 2 and power8 le](https://www.continuum.io/content/conda-support-raspberry-pi-2-and-power8-le)
+
+[![Anaconda-Server Badge](https://anaconda.org/rpi/python/badges/version.svg)](https://anaconda.org/rpi/python)
+
+[![Anaconda-Server Badge](https://anaconda.org/rpi/python/badges/platforms.svg)](https://anaconda.org/rpi/python)
+
+[![Anaconda-Server Badge](https://anaconda.org/rpi/python/badges/installer/conda.svg)](https://conda.anaconda.org/rpi)
