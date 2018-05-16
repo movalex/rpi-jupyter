@@ -51,6 +51,8 @@ in Python Jupyter notebook to generate new password, and add output as a value o
 The notebook will run under unpriviledged user `jovyan` (uid=1000) with ownership of `/home/jovyan` and `opt/conda`. If you want to mount your default working directory on the host to preserve work even when notebook is not running or destroyed, use additional `-v` option:
 
     docker run -it docker run -it -p <host port>:<dest port> -v <path to your config file>:/home/jovyan/.jupyter/jupyter_notebook_config.py -v /some/host/folder/for/work:/home/jovyan/work  movalex/rpi-jupyter-conda
+    
+### Login to bash session
 
 To login a bash session use:
 
@@ -82,7 +84,12 @@ Here's a list of [all packages available](https://www.continuum.io/content/conda
     python-dateutil, pytz, pyyaml, pyzmq (armv7l only), requests,
     scikit-learn (armv7l only), scipy (armv7l only), setuptools, six,
     sqlalchemy, sphinx, sympy, toolz, tornado, twisted, werkzeug, wheel
+    
+### Using Python 2 kernel
 
+This Docker container has only Python 3 kernel. If you still need Python2, you can add Python2 Conda environment and add it to Jupyter with `ipykernel` module. But since this module requires `gcc` and `libzmq3`, you'll need to install them first in priviledged bash session.
+
+IMHO better solution would be using [this datascience image](https://github.com/movalex/rpi-jupyter-julia) with all necessary libraries (and many others) pre-installed. [Here](https://github.com/movalex/rpi-jupyter-julia/blob/master/README.md#python2-kernel) you can read how to add Python2 kernel to Jupyter Notebook.
 
 [![Anaconda-Server Badge](https://anaconda.org/rpi/python/badges/version.svg)](https://anaconda.org/rpi/python)
 [![Anaconda-Server Badge](https://anaconda.org/rpi/python/badges/platforms.svg)](https://anaconda.org/rpi/python)
