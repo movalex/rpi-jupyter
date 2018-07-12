@@ -68,6 +68,6 @@ This Docker container has only Python 3 kernel. If you still need Python2, you c
 
 IMHO better solution would be using [this datascience container](https://github.com/movalex/rpi-jupyter-julia) with all necessary libraries (and many others) pre-installed. [Here](https://github.com/movalex/rpi-jupyter-julia/blob/master/README.md#python2-kernel) you can read how to add Python2 kernel to Jupyter Notebook.
 
-[![Anaconda-Server Badge](https://img.shields.io/badge/Anaconda%20Cloud-3.6.3-blue.svg?style=flat-square](https://anaconda.org/rpi/python)
+[![Anaconda-Server Badge](https://img.shields.io/badge/Anaconda%20Cloud-3.6.3-blue.svg?style=flat-square)](https://anaconda.org/rpi/python)
 [![Anaconda-Server Badge](https://img.shields.io/badge/Platforms-linux--armv6l,linux--armv7l-orange.svg?style=flat-square)](https://anaconda.org/rpi/python)
 [![Anaconda-Server Badge](https://img.shields.io/badge/Install%20with-conda-green.svg?style=flat-square)](https://conda.anaconda.org/rpi)
