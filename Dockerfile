@@ -1,6 +1,7 @@
 # This file creates a container that runs a jupyter notebook server on Raspberry Pi
 
-FROM resin/rpi-raspbian:latest
+FROM jsurf/rpi-raspbian
+
 MAINTAINER Alex Bogomolov <mail@abogomolov.com>
 
 USER root
@@ -20,25 +21,11 @@ RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
     locale-gen 
 
 # Install Tini from binary. Tini operates as a process subreaper for jupyter. This prevents kernel crashes.
-ENV TINI_VERSION 0.14.0
+ENV TINI_VERSION 0.18.0
 RUN wget https://github.com/krallin/tini/releases/download/v${TINI_VERSION}/tini-armhf && \
-	echo "4d06a370b9f912334e7edd7a000099474fd3c7f3d73d80353bd66ba7dc413a86 *tini-armhf" | sha256sum -c - && \
+	echo "01b54b934d5f5deb32aa4eb4b0f71d0e76324f4f0237cc262d59376bf2bdc269 *tini-armhf" | sha256sum -c - && \
 	mv tini-armhf /usr/local/bin/tini && \
 	chmod +x /usr/local/bin/tini
-#you can build tini yourself if you want to:
-#ENV TINI_VERSION 0.14.0
-#ENV CFLAGS="-DPR_SET_CHILD_SUBREAPER=36 -DPR_GET_CHILD_SUBREAPER=37"
-#ADD https://github.com/krallin/tini/archive/v${TINI_VERSION}.tar.gz v${TINI_VERSION}.tar.gz
-#RUN apt-get install -y cmake
-#RUN tar zxvf v${TINI_VERSION}.tar.gz \
-#        && cd tini-${TINI_VERSION} \
-#        && cmake . \
-#        && make \
-#        && cp tini /usr/bin/. \
-#        && cd .. \
-#        && rm -rf "./tini-${TINI_VERSION}" \
-#        && rm "./v${TINI_VERSION}.tar.gz"
-#ENTRYPOINT ["/usr/bin/tini", "--"]
 
 ENV CONDA_DIR=/opt/conda \
     SHELL=/bin/bash \
@@ -57,7 +44,7 @@ RUN useradd -m -s /bin/bash -N -u $NB_UID $NB_USER && \
     chown $NB_USER:$NB_GID $CONDA_DIR && \
     chmod g+w /etc/passwd /etc/group
 
-ENV PYTHON_VERSION=3.6.3
+ENV PYTHON_VERSION=3.6.6
 
 USER $NB_UID
 
@@ -81,8 +68,8 @@ RUN chown -R $NB_USER /home/$NB_USER
 
 RUN pip install -U pip setuptools --ignore-installed 
 RUN conda install --yes \
-    'notebook=5.2.*' \
-    'jupyterlab=0.31.*' 
+    'notebook=5.4.*' \
+RUN pip install jupyterlab==0.34.7 
 
 # Configure jupyter
 RUN jupyter notebook --generate-config
@@ -91,7 +78,6 @@ RUN sed -i "/c.NotebookApp.ip/c c.NotebookApp.ip = '*'" /home/$NB_USER/.jupyter/
 
 #VOLUME /home/$NB_USER/work
 USER root
-
 EXPOSE 8888
 WORKDIR /home/$NB_USER/work
 ENTRYPOINT ["tini", "--"]
