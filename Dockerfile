@@ -44,8 +44,10 @@ RUN useradd -m -s /bin/bash -N -u $NB_UID $NB_USER && \
     chown $NB_USER:$NB_GID $CONDA_DIR && \
     chmod g+w /etc/passwd /etc/group
 
+RUN  [ "cross-build-end" ]
 ENV PYTHON_VERSION='3.6.6'
 
+RUN  [ "cross-build-start" ]
 USER $NB_UID
 
 # Setup jovyan home directory
