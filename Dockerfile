@@ -42,7 +42,7 @@ ENV PATH=$CONDA_DIR/bin:$PATH \
 RUN useradd -d /home/$NB_USER -ms /bin/bash -g root -G sudo $NB_USER 
 #USER $NB_USER
 # Setup jovyan home directory
-RUN mkdir -p $CONDA_DIR && \
+RUN mkdir -p $CONDA_DIR 
 
 ENV PYTHON_VERSION='3.6.6'
 
@@ -82,6 +82,5 @@ EXPOSE 8888
 WORKDIR /home/$NB_USER/work
 ENTRYPOINT ["tini", "--"]
 CMD ["jupyter", "notebook", "--no-browser"]
-
 RUN [ "cross-build-end" ]
 USER $NB_UID
