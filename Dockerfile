@@ -3,10 +3,10 @@
 FROM jsurf/rpi-raspbian
 
 MAINTAINER Alex Bogomolov <mail@abogomolov.com>
+RUN [ "cross-build-start" ] 
 
 USER root
 #ENV DEBIAN_FRONTEND noninteractive
-ENV QEMU_EXECVE 1
 # Install packages 
 RUN apt-get update && apt-get upgrade && apt-get install -y \
         locales \
@@ -83,4 +83,4 @@ ENTRYPOINT ["tini", "--"]
 CMD ["jupyter", "notebook", "--no-browser"]
 
 USER $NB_UID
-
+RUN  [ "cross-build-end" ]
