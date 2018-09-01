@@ -3,8 +3,8 @@
 FROM jsurf/rpi-raspbian
 
 MAINTAINER Alex Bogomolov <mail@abogomolov.com>
-RUN [ "cross-build-start" ] 
 
+RUN [ "cross-build-start" ]
 USER root
 #ENV DEBIAN_FRONTEND noninteractive
 # Install packages 
@@ -39,20 +39,13 @@ ENV CONDA_DIR=/opt/conda \
 ENV PATH=$CONDA_DIR/bin:$PATH \
     HOME=/home/$NB_USER
 
-RUN useradd -m -s /bin/bash -N -u $NB_UID $NB_USER && \
-    mkdir -p $CONDA_DIR && \
-    chown $NB_USER:$NB_GID $CONDA_DIR && \
-    chmod g+w /etc/passwd /etc/group
+RUN useradd -d /home/$NB_USER -ms /bin/bash -g root -G sudo -u 0 $NB_USER 
+USER $NB_USER
+# Setup jovyan home directory
+RUN mkdir -p $CONDA_DIR && \
 
 ENV PYTHON_VERSION='3.6.6'
 
-RUN  [ "cross-build-end" ]
-
-RUN  [ "cross-build-start" ]
-
-USER $NB_UID
-
-# Setup jovyan home directory
 RUN mkdir /home/$NB_USER/work && \
     mkdir /home/$NB_USER/.jupyter && \
     echo "cacert=/etc/ssl/certs/ca-certificates.crt" > /home/$NB_USER/.curlrc
@@ -68,7 +61,6 @@ RUN cd /tmp && \
     conda install --yes python=$PYTHON_VERSION --channel rpi \
     && conda clean -tipsy
 
-RUN chown -R $NB_USER /home/$NB_USER
 
 RUN pip install -U pip setuptools --ignore-installed 
 RUN conda install --yes notebook --channel rpi 
@@ -79,15 +71,16 @@ RUN jupyter notebook --generate-config
 RUN sed -i "/c.NotebookApp.open_browser/c c.NotebookApp.open_browser = False" /home/$NB_USER/.jupyter/jupyter_notebook_config.py  
 RUN sed -i "/c.NotebookApp.ip/c c.NotebookApp.ip = '*'" /home/$NB_USER/.jupyter/jupyter_notebook_config.py
 
-RUN  [ "cross-build-end" ]
 #VOLUME /home/$NB_USER/work
-RUN  [ "cross-build-start" ]
+RUN chown -R $NB_USER /home/$NB_USER
+
 USER root
+RUN usermod -u $NB_UID $NB_USER && \
+    usermod -g $NG_GID $NB_USER && \
+    chown -R $NB_USER:$NB_GID $CONDA_DIR && \
+    chmod g+w /etc/passwd /etc/group
 EXPOSE 8888
 WORKDIR /home/$NB_USER/work
 ENTRYPOINT ["tini", "--"]
 CMD ["jupyter", "notebook", "--no-browser"]
-RUN  [ "cross-build-end" ]
-RUN  [ "cross-build-start" ]
 USER $NB_UID
-RUN  [ "cross-build-end" ]
