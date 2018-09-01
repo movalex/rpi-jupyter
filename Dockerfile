@@ -40,7 +40,7 @@ ENV PATH=$CONDA_DIR/bin:$PATH \
     HOME=/home/$NB_USER
 
 RUN useradd -d /home/$NB_USER -ms /bin/bash -g root -G sudo $NB_USER 
-USER $NB_USER
+#USER $NB_USER
 # Setup jovyan home directory
 RUN mkdir -p $CONDA_DIR && \
 
@@ -74,7 +74,6 @@ RUN sed -i "/c.NotebookApp.ip/c c.NotebookApp.ip = '*'" /home/$NB_USER/.jupyter/
 #VOLUME /home/$NB_USER/work
 RUN chown -R $NB_USER /home/$NB_USER
 
-USER root
 RUN usermod -u $NB_UID $NB_USER && \
     usermod -g $NG_GID $NB_USER && \
     chown -R $NB_USER:$NB_GID $CONDA_DIR && \
