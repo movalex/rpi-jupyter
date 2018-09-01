@@ -39,7 +39,7 @@ ENV CONDA_DIR=/opt/conda \
 ENV PATH=$CONDA_DIR/bin:$PATH \
     HOME=/home/$NB_USER
 
-RUN useradd -d /home/$NB_USER -ms /bin/bash -g root -G sudo -u 0 $NB_USER 
+RUN useradd -d /home/$NB_USER -ms /bin/bash -g root -G sudo $NB_USER 
 USER $NB_USER
 # Setup jovyan home directory
 RUN mkdir -p $CONDA_DIR && \
