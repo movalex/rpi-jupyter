@@ -44,7 +44,7 @@ RUN useradd -m -s /bin/bash -N -u $NB_UID $NB_USER && \
     chown $NB_USER:$NB_GID $CONDA_DIR && \
     chmod g+w /etc/passwd /etc/group
 
-ENV PYTHON_VERSION=3.6.6
+ENV PYTHON_VERSION='3.6.6'
 
 USER $NB_UID
 
@@ -61,14 +61,13 @@ RUN cd /tmp && \
     /bin/bash Berryconda3-2.0.0-Linux-armv7l.sh -f -b -p $CONDA_DIR && \
     rm Berryconda3-2.0.0-Linux-armv7l.sh && \
     $CONDA_DIR/bin/conda config --system --add channels rpi && \
-    conda install --yes python=$PYTHON_VERSION \
+    conda install --yes python=$PYTHON_VERSION --channel rpi \
     && conda clean -tipsy
 
 RUN chown -R $NB_USER /home/$NB_USER
 
 RUN pip install -U pip setuptools --ignore-installed 
-RUN conda install --yes \
-    'notebook=5.4.*' \
+RUN conda install --yes notebook --channel rpi 
 RUN pip install jupyterlab==0.34.7 
 
 # Configure jupyter
