@@ -44,10 +44,12 @@ RUN useradd -m -s /bin/bash -N -u $NB_UID $NB_USER && \
     chown $NB_USER:$NB_GID $CONDA_DIR && \
     chmod g+w /etc/passwd /etc/group
 
-RUN  [ "cross-build-end" ]
 ENV PYTHON_VERSION='3.6.6'
 
+RUN  [ "cross-build-end" ]
+
 RUN  [ "cross-build-start" ]
+
 USER $NB_UID
 
 # Setup jovyan home directory
@@ -77,12 +79,15 @@ RUN jupyter notebook --generate-config
 RUN sed -i "/c.NotebookApp.open_browser/c c.NotebookApp.open_browser = False" /home/$NB_USER/.jupyter/jupyter_notebook_config.py  
 RUN sed -i "/c.NotebookApp.ip/c c.NotebookApp.ip = '*'" /home/$NB_USER/.jupyter/jupyter_notebook_config.py
 
+RUN  [ "cross-build-end" ]
 #VOLUME /home/$NB_USER/work
+RUN  [ "cross-build-start" ]
 USER root
 EXPOSE 8888
 WORKDIR /home/$NB_USER/work
 ENTRYPOINT ["tini", "--"]
 CMD ["jupyter", "notebook", "--no-browser"]
-
+RUN  [ "cross-build-end" ]
+RUN  [ "cross-build-start" ]
 USER $NB_UID
 RUN  [ "cross-build-end" ]
