@@ -83,4 +83,6 @@ EXPOSE 8888
 WORKDIR /home/$NB_USER/work
 ENTRYPOINT ["tini", "--"]
 CMD ["jupyter", "notebook", "--no-browser"]
+
+RUN [ "cross-build-end" ]
 USER $NB_UID
