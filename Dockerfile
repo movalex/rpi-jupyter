@@ -5,7 +5,7 @@ FROM jsurf/rpi-raspbian
 MAINTAINER Alex Bogomolov <mail@abogomolov.com>
 
 USER root
-ENV DEBIAN_FRONTEND noninteractive
+#ENV DEBIAN_FRONTEND noninteractive
 
 # Install packages 
 RUN apt-get update && apt-get upgrade && apt-get install -y \
