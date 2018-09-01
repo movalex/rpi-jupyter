@@ -6,7 +6,7 @@ MAINTAINER Alex Bogomolov <mail@abogomolov.com>
 
 USER root
 #ENV DEBIAN_FRONTEND noninteractive
-
+ENV QEMU_EXECVE 1
 # Install packages 
 RUN apt-get update && apt-get upgrade && apt-get install -y \
         locales \
