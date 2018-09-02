@@ -2,18 +2,16 @@
 
 FROM jsurf/rpi-raspbian-build-essentials 
 
-MAINTAINER Alex Bogomolov <mail@abogomolov.com>
-
 RUN [ "cross-build-start" ]
 USER root
 # Install packages 
-# RUN apt-get update && apt-get upgrade && apt-get install -y \
-#     locales \
-#     ca-certificates \
-#     wget \
-#     bzip2
+RUN apt-get update && apt-get upgrade && apt-get install -y \
+    locales \
+    ca-certificates \
+    wget \
+    bzip2
 
-# RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen 
+RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen 
 
 # Install Tini from binary. Tini operates as a process subreaper for jupyter. This prevents kernel crashes.
 ENV TINI_VERSION 0.18.0
@@ -35,7 +33,7 @@ ENV PATH=$CONDA_DIR/bin:$PATH \
     HOME=/home/$NB_USER
 
 RUN useradd -d /home/$NB_USER -ms /bin/bash -g root -G sudo $NB_USER 
-#USER $NB_USER
+
 # Setup jovyan home directory
 RUN mkdir -p $CONDA_DIR 
 
@@ -47,7 +45,6 @@ RUN mkdir /home/$NB_USER/work && \
 
 #Install BerryConda
 RUN cd /tmp && \
-    mkdir -p $CONDA_DIR && \
     wget --quiet https://github.com/jjhelmus/berryconda/releases/download/v2.0.0/Berryconda3-2.0.0-Linux-armv7l.sh && \
     echo "44d29f2e8f5cc0e5a360edb8b49eda52aa23acf41ed064314ae70876a4f130bf *Berryconda3-2.0.0-Linux-armv7l.sh" | sha256sum -c -
 RUN cd /tmp && ./Berryconda3-2.0.0-Linux-armv7l.sh -f -b -p $CONDA_DIR && \
@@ -55,9 +52,9 @@ RUN cd /tmp && ./Berryconda3-2.0.0-Linux-armv7l.sh -f -b -p $CONDA_DIR && \
     $CONDA_DIR/bin/conda config --system --add channels rpi && \
     conda install --yes python=$PYTHON_VERSION --channel rpi \
     && conda clean -tipsy
+RUN conda install --yes notebook --channel rpi 
 
 RUN pip install -U pip setuptools --ignore-installed 
-RUN conda install --yes notebook --channel rpi 
 RUN pip install jupyterlab==0.34.7 
 
 # Configure jupyter
