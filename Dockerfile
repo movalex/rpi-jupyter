@@ -1,21 +1,17 @@
 # This file creates a container that runs a jupyter notebook server on Raspberry Pi
 
-FROM jsurf/rpi-raspbian
+FROM jsurf/rpi-raspbian-build-essentials 
 
 MAINTAINER Alex Bogomolov <mail@abogomolov.com>
 
 RUN [ "cross-build-start" ]
 USER root
-#ENV DEBIAN_FRONTEND noninteractive
 # Install packages 
 RUN apt-get update && apt-get upgrade && apt-get install -y \
-        locales \
-        ca-certificates \
-        wget \
-        bzip2 \
-        fonts-liberation \
-	&& apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    locales \
+    ca-certificates \
+    wget \
+    bzip2 \
 
 RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
     locale-gen 
@@ -61,7 +57,6 @@ RUN cd /tmp && \
     conda install --yes python=$PYTHON_VERSION --channel rpi \
     && conda clean -tipsy
 
-
 RUN pip install -U pip setuptools --ignore-installed 
 RUN conda install --yes notebook --channel rpi 
 RUN pip install jupyterlab==0.34.7 
@@ -71,7 +66,6 @@ RUN jupyter notebook --generate-config
 RUN sed -i "/c.NotebookApp.open_browser/c c.NotebookApp.open_browser = False" /home/$NB_USER/.jupyter/jupyter_notebook_config.py  
 RUN sed -i "/c.NotebookApp.ip/c c.NotebookApp.ip = '*'" /home/$NB_USER/.jupyter/jupyter_notebook_config.py
 
-#VOLUME /home/$NB_USER/work
 RUN chown -R $NB_USER /home/$NB_USER
 
 RUN usermod -u $NB_UID $NB_USER && \
