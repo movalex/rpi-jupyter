@@ -1,15 +1,15 @@
 # rpi-jupyter-conda
 
-Minimal Jupyter Notebook for Raspberry Pi with Python 3.6.3
+Minimal Jupyter Notebook for Raspberry Pi with Python 3.6.6
 ----------
 To have your own Jupyter Notebook Server running 24/7 on Raspberry Pi. If connected to your router, with port forwarding and DDNS set up, you can carry out your Jupyter tasks on the move.
 
-This is a minimal Jupyter notebook server with Python 3.6.3 installed with [Berryconda3](https://github.com/jjhelmus/berryconda) and [resin/rpi-raspbian:latest](https://hub.docker.com/r/resin/rpi-raspbian/) as base image. JupyterLab is also installed. To use Lab interface just replace `tree` with `lab` in notebook URL. 
+This is a minimal Jupyter notebook server with Python 3.6.6 installed with [Berryconda3](https://github.com/jjhelmus/berryconda) and [resin/rpi-raspbian:latest](https://hub.docker.com/r/resin/rpi-raspbian/) as base image. JupyterLab is also installed. To use Lab interface just replace `tree` with `lab` in notebook URL. 
 
 * Minimal function Jupyter notebook 5.2.x installation
-* Conda based Python 3.6.3 for Raspberry pi
+* Conda based Python 3.6.6 for Raspberry pi
 * Unprivileged user jovyan in group users (gid=100) with ownership over `/home/jovyan` and `/opt/conda`
-* [Tini](https://github.com/krallin/tini) 0.14.0 as the container entrypoint
+* [Tini](https://github.com/krallin/tini) 0.18.0 as the container entrypoint
 
 These packages are installed:
 
@@ -68,6 +68,6 @@ This Docker container has only Python 3 kernel. If you still need Python2, you c
 
 IMHO better solution would be using [this datascience container](https://github.com/movalex/rpi-jupyter-julia) with all necessary libraries (and many others) pre-installed. [Here](https://github.com/movalex/rpi-jupyter-julia/blob/master/README.md#python2-kernel) you can read how to add Python2 kernel to Jupyter Notebook.
 
-[![Anaconda-Server Badge](https://img.shields.io/badge/Anaconda%20Cloud-3.6.3-blue.svg?style=flat-square)](https://anaconda.org/rpi/python)
+[![Anaconda-Server Badge](https://img.shields.io/badge/Anaconda%20Cloud-3.6.6-blue.svg?style=flat-square)](https://anaconda.org/rpi/python)
 [![Anaconda-Server Badge](https://img.shields.io/badge/Platforms-linux--armv6l,linux--armv7l-orange.svg?style=flat-square)](https://anaconda.org/rpi/python)
 [![Anaconda-Server Badge](https://img.shields.io/badge/Install%20with-conda-green.svg?style=flat-square)](https://conda.anaconda.org/rpi)
