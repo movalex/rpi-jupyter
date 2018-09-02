@@ -77,9 +77,6 @@ RUN sed -i "/c.NotebookApp.ip/c c.NotebookApp.ip = '*'" /home/$NB_USER/.jupyter/
 
 RUN chown -R $NB_USER /home/$NB_USER
 
-RUN usermod -u $NB_UID $NB_USER && \
-    usermod -g $NG_GID $NB_USER && \
-
 USER root
 EXPOSE 8888
 WORKDIR /home/$NB_USER/work
