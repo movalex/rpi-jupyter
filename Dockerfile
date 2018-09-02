@@ -7,14 +7,13 @@ MAINTAINER Alex Bogomolov <mail@abogomolov.com>
 RUN [ "cross-build-start" ]
 USER root
 # Install packages 
-RUN apt-get update && apt-get upgrade && apt-get install -y \
-    locales \
-    ca-certificates \
-    wget \
-    bzip2 \
+# RUN apt-get update && apt-get upgrade && apt-get install -y \
+#     locales \
+#     ca-certificates \
+#     wget \
+#     bzip2
 
-RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
-    locale-gen 
+# RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && locale-gen 
 
 # Install Tini from binary. Tini operates as a process subreaper for jupyter. This prevents kernel crashes.
 ENV TINI_VERSION 0.18.0
@@ -50,8 +49,8 @@ RUN mkdir /home/$NB_USER/work && \
 RUN cd /tmp && \
     mkdir -p $CONDA_DIR && \
     wget --quiet https://github.com/jjhelmus/berryconda/releases/download/v2.0.0/Berryconda3-2.0.0-Linux-armv7l.sh && \
-    echo "44d29f2e8f5cc0e5a360edb8b49eda52aa23acf41ed064314ae70876a4f130bf *Berryconda3-2.0.0-Linux-armv7l.sh" | sha256sum -c - && \
-    /bin/sh Berryconda3-2.0.0-Linux-armv7l.sh -f -b -p $CONDA_DIR && \
+    echo "44d29f2e8f5cc0e5a360edb8b49eda52aa23acf41ed064314ae70876a4f130bf *Berryconda3-2.0.0-Linux-armv7l.sh" | sha256sum -c -
+RUN cd /tmp && ./Berryconda3-2.0.0-Linux-armv7l.sh -f -b -p $CONDA_DIR && \
     rm Berryconda3-2.0.0-Linux-armv7l.sh && \
     $CONDA_DIR/bin/conda config --system --add channels rpi && \
     conda install --yes python=$PYTHON_VERSION --channel rpi \
