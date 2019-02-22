@@ -67,8 +67,7 @@ RUN $CONDA_DIR/bin/conda config --system --add channels rpi && \
 RUN chown -R $NB_USER /home/$NB_USER
 
 RUN pip install -U pip setuptools --ignore-installed 
-RUN conda install --yes notebook --channel rpi 
-RUN pip install jupyterlab==0.34.7
+RUN conda install --yes -c rpi  notebook jupyterlab 
 
 # Configure jupyter
 RUN jupyter notebook --generate-config
