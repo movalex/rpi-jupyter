@@ -1,9 +1,20 @@
 # This file creates a container that runs a jupyter notebook server on Raspberry Pi
 
+<<<<<<< HEAD
 FROM jsurf/rpi-raspbian-build-essentials 
+=======
+FROM resin/rpi-raspbian:latest
+
+MAINTAINER Alex Bogomolov <mail@abogomolov.com>
+>>>>>>> master
 
 RUN [ "cross-build-start" ]
 USER root
+<<<<<<< HEAD
+=======
+ENV DEBIAN_FRONTEND noninteractive
+
+>>>>>>> master
 # Install packages 
 RUN apt-get update && apt-get upgrade && apt-get install -y \
     locales \
@@ -34,10 +45,14 @@ ENV PATH=$CONDA_DIR/bin:$PATH \
 
 RUN useradd -d /home/$NB_USER -ms /bin/bash -g root -G sudo $NB_USER 
 
+<<<<<<< HEAD
 # Setup jovyan home directory
 RUN mkdir -p $CONDA_DIR 
 
 ENV PYTHON_VERSION='3.6.6'
+=======
+USER $NB_UID
+>>>>>>> master
 
 RUN mkdir /home/$NB_USER/work && \
     mkdir /home/$NB_USER/.jupyter && \
@@ -46,6 +61,7 @@ RUN mkdir /home/$NB_USER/work && \
 #Install BerryConda
 RUN cd /tmp && \
     wget --quiet https://github.com/jjhelmus/berryconda/releases/download/v2.0.0/Berryconda3-2.0.0-Linux-armv7l.sh && \
+<<<<<<< HEAD
     echo "44d29f2e8f5cc0e5a360edb8b49eda52aa23acf41ed064314ae70876a4f130bf *Berryconda3-2.0.0-Linux-armv7l.sh" | sha256sum -c -
 RUN cd /tmp && ./Berryconda3-2.0.0-Linux-armv7l.sh -f -b -p $CONDA_DIR && \
     rm Berryconda3-2.0.0-Linux-armv7l.sh && \
@@ -56,6 +72,20 @@ RUN cd /tmp && ./Berryconda3-2.0.0-Linux-armv7l.sh -f -b -p $CONDA_DIR && \
 RUN conda install --yes -c rpi notebook jupyterlab 
 
 RUN pip install -U pip setuptools --ignore-installed 
+=======
+    echo "44d29f2e8f5cc0e5a360edb8b49eda52aa23acf41ed064314ae70876a4f130bf *Berryconda3-2.0.0-Linux-armv7l.sh" | sha256sum -c - && \
+    /bin/bash Berryconda3-2.0.0-Linux-armv7l.sh -f -b -p $CONDA_DIR && \
+    rm Berryconda3-2.0.0-Linux-armv7l.sh
+RUN $CONDA_DIR/bin/conda config --system --add channels rpi && \
+    conda install --yes python=$PYTHON_VERSION --channel rpi && \
+    conda clean -tipsy
+    
+RUN chown -R $NB_USER /home/$NB_USER
+
+RUN pip install -U pip setuptools --ignore-installed 
+RUN conda install --yes notebook --channel rpi 
+RUN pip install jupyterlab==0.34.7
+>>>>>>> master
 
 # Configure jupyter
 RUN jupyter notebook --generate-config
@@ -64,13 +94,21 @@ RUN sed -i "/c.NotebookApp.ip/c c.NotebookApp.ip = '*'" /home/$NB_USER/.jupyter/
 
 RUN chown -R $NB_USER /home/$NB_USER
 
+<<<<<<< HEAD
 RUN usermod -u $NB_UID $NB_USER && \
     usermod -g $NG_GID $NB_USER && \
     chown -R $NB_USER:$NB_GID $CONDA_DIR && \
     chmod g+w /etc/passwd /etc/group
+=======
+USER root
+>>>>>>> master
 EXPOSE 8888
 WORKDIR /home/$NB_USER/work
 ENTRYPOINT ["tini", "--"]
 CMD ["jupyter", "notebook", "--no-browser"]
+<<<<<<< HEAD
 RUN [ "cross-build-end" ]
+=======
+
+>>>>>>> master
 USER $NB_UID
