@@ -52,10 +52,10 @@ RUN cd /tmp && ./Berryconda3-2.0.0-Linux-armv7l.sh -f -b -p $CONDA_DIR && \
     $CONDA_DIR/bin/conda config --system --add channels rpi && \
     conda install --yes python=$PYTHON_VERSION --channel rpi \
     && conda clean -tipsy
-RUN conda install --yes notebook --channel rpi 
+
+RUN conda install --yes -c rpi notebook jupyterlab 
 
 RUN pip install -U pip setuptools --ignore-installed 
-RUN pip install jupyterlab==0.34.7 
 
 # Configure jupyter
 RUN jupyter notebook --generate-config
