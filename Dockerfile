@@ -1,6 +1,6 @@
 # This file creates a container that runs a jupyter notebook server on Raspberry Pi
 
-FROM resin/rpi-raspbian:latest
+FROM balena/rpi-raspbian:latest
 
 MAINTAINER Alex Bogomolov <mail@abogomolov.com>
 
